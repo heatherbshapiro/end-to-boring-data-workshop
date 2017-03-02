@@ -56,10 +56,10 @@ To combat the problem of different operating systems and computer setups, we wil
 2. If you already have a Microsoft account, please log in with that and skip the following steps. If you do not already have a Microsoft account, click "Create a new Microsoft Account" and follow the steps bulleted below. 
     - Enter an email and password that you would like to use for your new account. You may use an email that you already have and link the two. Otherwise click "Get a new email address" and follow the steps.
     - Click 'Next' 
-    ![Microsoft account page](/images/microsoft-account-signup.PNG)
+    ![Microsoft account page](/images/microsoft account signup.PNG)
     - If you used an existing email, you will need to get the code sent to that email and enter it in.
     - If you used a new email you will have to enter a phone number and have a security code texted to you.
     - You will be asked to allow the app to have access to your account. Click 'Yes'.
-    ![Microsoft App Access](/images/app-access-info.PNG)
+    ![Microsoft App Access](/images/app access info.PNG)
 3. Create a User ID (optional)
-![Create a user ID](/images/user-id.PNG)
+![Create a user ID](/images/user id.PNG)
