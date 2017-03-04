@@ -94,20 +94,25 @@ rests = pd.read_csv("NYC_Restaurants.csv")
 mRests = rests[rests['BORO']=="MANHATTAN"] 
 ```
 You can manipulate this dataframe now by running code like mRests['Boro], or see column values by running list(mRests.columns.values)
+
 2. Remove stores that have not been graded yet.
 ```
 mRests = mRests[mRests['GRADE']!="Not Yet Graded"]
 ```
+
 3. Remove stores that have no grade.
 ```
 mRests = mRests[pd.notnull(mRests["GRADE"])]
 ```
+
 4. Using this knowledge, you can remove all the stores that also have no score.
+
 5. Redefine the score levels so that A is best, then B, then C, P, and Z. 
 
 ```
 mRests["GRADE"] = mRests["GRADE"].astype("category",categories = ["A","B","C","P","Z"], ordered = True)
 ```
+
 6. Reset the index with the now filtered dataframe.
 ```
 mRests = mRests.reset_index(drop=True)
@@ -119,9 +124,11 @@ mRests.head()
 
 1. Create figure area with axes.
 ` f, ax = plt.subplots() ## creates figure area with axes`
+
 2. Create a histogram of the data using numpy. 
 `data = mRests['SCORE']
 plt.hist(data)
+
 `
 3. Create labels for the axes and a title.
 ```
@@ -129,6 +136,7 @@ plt.xlabel('Score')
 plt.ylabel('Frequency')
 plt.title("Frequency of Restaurant Scores")
 ```
+
 4. Display the plot
 `plt.show()`
 
