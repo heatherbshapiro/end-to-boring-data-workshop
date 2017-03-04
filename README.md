@@ -131,7 +131,7 @@ mRests.head()
 data = mRests['SCORE']
 plt.hist(data)
 ```
-  - Create labels for the axes and a title.
+  - Create labels for the axes and a title. Do this in the same cell.
 ```
 plt.xlabel('Score')
 plt.ylabel('Frequency')
@@ -160,7 +160,7 @@ mRests["Critical Flag"].value_counts().plot(kind = "bar")
 ```
 
 ### Seaborn
-  - Install seaborn ` ## pip install seaborn`
+  - Install seaborn ` !pip install seaborn`
   - Import Seaborn `import seaborn as sns`
   - Select the plot style
 
@@ -184,8 +184,8 @@ sns.stripplot(x="GRADE", y = "SCORE", data = mRests)
 
 In order to plot the points on the maps, we will need to convert the addresses to a geolocation. The addresses right now are very inconsistent with their labeling so we have to go through each address and normalize them. We won't go into this code too much but it convert numbers to words, and orginal words to numbers. Copy the following code
 ```
-# !pip install -e git+https://github.com/pwdyson/inflect.py#egg=inflect
-# !conda update anaconda --y
+!pip install -e git+https://github.com/pwdyson/inflect.py#egg=inflect
+!conda update anaconda --y
 !pip install inflect
 
 import inflect
