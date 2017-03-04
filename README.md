@@ -33,17 +33,16 @@ This workshop will walk through the steps of analyzing a NYC Restaurant Rating d
 
 ## Steps to take
 1. [Setting up Azure Notebooks](#1-setting-up-azure-notebooks)
-2. Importing dataset
-3. Loading libraries
-4. Understanding Pandas for data analysis
-5. Basic Graphs
+2. Importing dataset and loading necessary libraries
+3. Understanding Pandas for data analysis
+4. Basic Graphs
     - Matplotlib
     - Pandas
     - Seaborn
-6. Mapping
+5. Mapping
     - Basemap
     - Folium
-7. Interactive Graphs
+6. Interactive Graphs
     - Bokeh
     - Plot.ly
 
@@ -62,16 +61,13 @@ To combat the problem of different operating systems and computer setups, we wil
 6. Click 'New' and then select 'Python 3'.
 ![New Python3 Notebook](/images/new-python3.PNG)
 
-## Importing the dataset
+## 2. Importing the dataset and necessary libraries
 
 1. In order to get the dataset, you can import from the Dropbox link below. This data is several weeks date, but the latitudes and longitudes for these restaurants have already been calculated. Click [here](https://notebooks.azure.com/faq#upload_data) to learn other ways to import data in to Azure Notebooks.
-
 ```
 !curl -L https://www.dropbox.com/s/qsodvwpcyu3mxei/NYC%20Restaurants.csv?dl=1 -o NYC_Restaurants.csv
 ```
-
-2. We will need to import several libraries in order to analyze this data. Run the following code in a new cell.
-
+2. We will need to import several libraries in order to analyze this data. Run the following code in a new cell. We will import more later on.
 ```
 import numpy as np
 import pandas as pd
@@ -79,10 +75,62 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 %matplotlib inline
 ```
+  ** %matplotlib inline will display the plots in the browser without opening a new page.
 
-%matplotlib inline will display the plots in the browser without opening a new page.
+## 3. Understanding Pandas for Data Analysis
 
+### Read NYC Restaurant CSV
 
+#### Read the data from the CSV into a Pandas DataFrame
+
+```
+rests = pd.read_csv("NYC_Restaurants.csv")
+```
+
+#### Filter the data 
+
+1. Only look at Manhattan Data. Filter on the BORO column in the dataset to only values that equal 'MANHATTAN'.
+```
+mRests = rests[rests['BORO']=="MANHATTAN"] 
+```
+You can manipulate this dataframe now by running code like mRests['Boro], or see column values by running list(mRests.columns.values)
+2. Remove stores that have not been graded yet.
+```
+mRests = mRests[mRests['GRADE']!="Not Yet Graded"]
+```
+3. Remove stores that have no grade.
+```
+mRests = mRests[pd.notnull(mRests["GRADE"])]
+```
+4. Using this knowledge, you can remove all the stores that also have no score.
+5. Redefine the score levels so that A is best, then B, then C, P, and Z. 
+
+```
+mRests["GRADE"] = mRests["GRADE"].astype("category",categories = ["A","B","C","P","Z"], ordered = True)
+```
+6. Reset the index with the now filtered dataframe.
+```
+mRests = mRests.reset_index(drop=True)
+mRests.head()
+```
+## 4. Creating traditional statistical graphs
+
+### Matplotlib
+
+1. Create figure area with axes.
+` f, ax = plt.subplots() ## creates figure area with axes`
+2. Create a histogram of the data using numpy. 
+`data = mRests['SCORE']
+plt.hist(data)
+`
+3. Create labels for the axes and a title.
+```
+plt.xlabel('Score')
+plt.ylabel('Frequency')
+plt.title("Frequency of Restaurant Scores")
+```
+4. Display the plot
+`plt.show()`
 
 ## Create a Microsoft Account
 
