@@ -2,7 +2,7 @@
 
 Put the days of trying to decipher meaning from boring spreadsheets behind you. Visualize data to give greater and immediate meaning to all those numbers with Python. We will explore the variety of options available for data visualization in Python using different libraries and understand which ones excel for what type of task. Create maps, statistical graphs and more detailed or interactive visualizations that can also be used on the web, ideal to take that blog post to a whole new level. This presentation tackles boring data by looking at python libraries available for mapping such as basemap and folium, statistical graphs from libraries such as matplotlib and seaborn, as well as libraries such as Bokeh and Plotly that can be used for making interactive graphs.
 
-This workshop will walk through the steps of analyzing a NYC Restaurant Rating dataset and creating visualizations that can lead us to important realizations about the data.
+This workshop will walk through the steps of analyzing a NYC Restaurant Rating dataset and creating visualizations that can lead us to important realizations about the data. A completed version of the python code can be found [here](https://github.com/heatherbshapiro/an-end-to-boring-data/blob/master/An_End_to_Boring_Data.ipynb).
 
 ### The Slides for this talk are available [here](http://www.slideshare.net/HeatherShapiro/an-end-to-boring-data-with-visualizations-in-python?ref=https://www.linkedin.com/).
 
@@ -58,8 +58,29 @@ To combat the problem of different operating systems and computer setups, we wil
 ![Create a user ID](/images/user id.PNG)
 4. Click to create a new library. Give your library a name, and open the newly created library.
 5. Click the button that says 'Go to Jupyter'.
-![New Notebook](/images/new-notebook.PNG)
+![New Jupyter Server](/images/new-notebook.PNG)
+6. Click 'New' and then select 'Python 3'.
+![New Python3 Notebook](/images/new-python3.PNG)
 
+## Importing the dataset
+
+1. In order to get the dataset, you can import from the Dropbox link below. This data is several weeks date, but the latitudes and longitudes for these restaurants have already been calculated. Click [here](https://notebooks.azure.com/faq#upload_data) to learn other ways to import data in to Azure Notebooks.
+
+```
+!curl -L https://www.dropbox.com/s/qsodvwpcyu3mxei/NYC%20Restaurants.csv?dl=1 -o NYC_Restaurants.csv
+```
+
+2. We will need to import several libraries in order to analyze this data. Run the following code in a new cell.
+
+```
+import numpy as np
+import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+%matplotlib inline will display the plots in the browser without opening a new page.
 
 
 
