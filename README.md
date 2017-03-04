@@ -127,10 +127,10 @@ mRests.head()
 ` f, ax = plt.subplots() ## creates figure area with axes`
 
   - Create a histogram of the data using numpy. 
-`data = mRests['SCORE']
+```
+data = mRests['SCORE']
 plt.hist(data)
-
-`
+```
   - Create labels for the axes and a title.
 ```
 plt.xlabel('Score')
@@ -259,7 +259,7 @@ map.drawrivers()
 map.fillcontinents(color = 'gainsboro')
 map.drawmapboundary(fill_color='steelblue')
 ```
-  - Plot the map map.plot(samp['lat'][1],samp['long'][1],'bo', markersize = 24)
+  - Plot the map `map.plot(samp['lat'][1],samp['long'][1],'bo', markersize = 24)`
 
 
 ### Folium
