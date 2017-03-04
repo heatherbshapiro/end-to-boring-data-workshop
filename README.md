@@ -168,9 +168,9 @@ sns.set(style="whitegrid", color_codes=True) ### Updates only the seaborn charts
 plt.style.use('seaborn-colorblind') ### updates for all graphs in the page created after the fact
 ```
   - Create a Strip Plot
-```sns.stripplot(x="GRADE", y = "SCORE", data = mRests)
 ```
-
+sns.stripplot(x="GRADE", y = "SCORE", data = mRests)
+```
   - This plot does not allow us to see the depth of the data and how many datapoints are actually included. To change this, we can use the parameter `jitter = True`.
   - Break the data down by the Critical Flag using the `hue` parameter.
   - Try creating a boxplot and barplot using these same parameters (excluding jitter).
