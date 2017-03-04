@@ -32,7 +32,7 @@ This workshop will walk through the steps of analyzing a NYC Restaurant Rating d
 
 
 ## Steps to take
-1. Setting up Azure Notebooks
+1. [Setting up Azure Notebooks](#1-setting-up-azure-notebooks)
 2. Importing dataset
 3. Loading libraries
 4. Understanding Pandas for data analysis
@@ -56,6 +56,10 @@ To combat the problem of different operating systems and computer setups, we wil
 2. If you already have a Microsoft account, please log in with that and skip the following steps. If you do not already have a Microsoft account, click "Create a new Microsoft Account" and follow the steps explained in the create a Microsoft account [section](#create-a-microsoft-account). 
 3. Create a User ID (optional)
 ![Create a user ID](/images/user id.PNG)
+4. Click to create a new library. Give your library a name, and open the newly created library.
+5. Click the button that says 'Go to Jupyter'.
+![New Notebook](/images/new-notebook.PNG)
+
 
 
 
