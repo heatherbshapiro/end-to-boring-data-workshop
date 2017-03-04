@@ -322,7 +322,7 @@ tabs = Tabs(tabs=[ tab1, tab2 ])
 
 We will use the offline version of plotly so we will not need to create any accounts here or upload our graphs. 
   - Import plotly
-  ```
+```
 import plotly.graph_objs as go
 from plotly.offline import download_plotlyjs, init_notebook_mode, iplot
 init_notebook_mode(connected=True)
