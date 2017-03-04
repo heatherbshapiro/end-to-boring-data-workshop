@@ -93,7 +93,7 @@ rests = pd.read_csv("NYC_Restaurants.csv")
 ```
 mRests = rests[rests['BORO']=="MANHATTAN"] 
 ```
-You can manipulate this dataframe now by running code like mRests['Boro], or see column values by running list(mRests.columns.values)
+You can manipulate this dataframe now by running code like `mRests['Boro]`, or see column values by running `list(mRests.columns.values)`.
 
 2. Remove stores that have not been graded yet.
 ```
