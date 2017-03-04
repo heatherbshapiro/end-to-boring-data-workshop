@@ -63,11 +63,12 @@ To combat the problem of different operating systems and computer setups, we wil
 
 ## 2. Importing the dataset and necessary libraries
 
-1. In order to get the dataset, you can import from the Dropbox link below. This data is several weeks date, but the latitudes and longitudes for these restaurants have already been calculated. Click [here](https://notebooks.azure.com/faq#upload_data) to learn other ways to import data in to Azure Notebooks.
+  - In order to get the dataset, you can import from the Dropbox link below. This data is several weeks date, but the latitudes and longitudes for these restaurants have already been calculated. Click [here](https://notebooks.azure.com/faq#upload_data) to learn other ways to import data in to Azure Notebooks.
 ```
 !curl -L https://www.dropbox.com/s/qsodvwpcyu3mxei/NYC%20Restaurants.csv?dl=1 -o NYC_Restaurants.csv
 ```
-2. We will need to import several libraries in order to analyze this data. Run the following code in a new cell. We will import more later on.
+
+  - We will need to import several libraries in order to analyze this data. Run the following code in a new cell. We will import more later on.
 ```
 import numpy as np
 import pandas as pd
@@ -89,31 +90,31 @@ rests = pd.read_csv("NYC_Restaurants.csv")
 
 #### Filter the data 
 
-1. Only look at Manhattan Data. Filter on the BORO column in the dataset to only values that equal 'MANHATTAN'.
+  - Only look at Manhattan Data. Filter on the BORO column in the dataset to only values that equal 'MANHATTAN'.
 ```
 mRests = rests[rests['BORO']=="MANHATTAN"] 
 ```
 You can manipulate this dataframe now by running code like `mRests['Boro]`, or see column values by running `list(mRests.columns.values)`.
 
-2. Remove stores that have not been graded yet.
+  - Remove stores that have not been graded yet.
 ```
 mRests = mRests[mRests['GRADE']!="Not Yet Graded"]
 ```
 
-3. Remove stores that have no grade.
+  - Remove stores that have no grade.
 ```
 mRests = mRests[pd.notnull(mRests["GRADE"])]
 ```
 
-4. Using this knowledge, you can remove all the stores that also have no score.
+  - Using this knowledge, you can remove all the stores that also have no score.
 
-5. Redefine the score levels so that A is best, then B, then C, P, and Z. 
+  - Redefine the score levels so that A is best, then B, then C, P, and Z. 
 
 ```
 mRests["GRADE"] = mRests["GRADE"].astype("category",categories = ["A","B","C","P","Z"], ordered = True)
 ```
 
-6. Reset the index with the now filtered dataframe.
+  - Reset the index with the now filtered dataframe.
 ```
 mRests = mRests.reset_index(drop=True)
 mRests.head()
@@ -122,22 +123,22 @@ mRests.head()
 
 ### Matplotlib
 
-1. Create figure area with axes.
+  - Create figure area with axes.
 ` f, ax = plt.subplots() ## creates figure area with axes`
 
-2. Create a histogram of the data using numpy. 
+  - Create a histogram of the data using numpy. 
 `data = mRests['SCORE']
 plt.hist(data)
 
 `
-3. Create labels for the axes and a title.
+  - Create labels for the axes and a title.
 ```
 plt.xlabel('Score')
 plt.ylabel('Frequency')
 plt.title("Frequency of Restaurant Scores")
 ```
 
-4. Display the plot
+  - Display the plot
 `plt.show()`
 
 ### Pandas
@@ -156,9 +157,9 @@ mRests["GRADE"].value_counts().plot(kind = "pie")
 mRests["Critical Flag"].value_counts().plot(kind = "bar")
 
 ### Seaborn
-1. Install seaborn ` ## pip install seaborn`
-2. Import Seaborn `import seaborn as sns`
-3. Select the plot style
+  - Install seaborn ` ## pip install seaborn`
+  - Import Seaborn `import seaborn as sns`
+  - Select the plot style
 
 To see what styles are available  `plt.style.available`
 You can select the style by running either of the following lines:
@@ -166,22 +167,19 @@ You can select the style by running either of the following lines:
 sns.set(style="whitegrid", color_codes=True) ### Updates only the seaborn charts created after the fact
 plt.style.use('seaborn-colorblind') ### updates for all graphs in the page created after the fact
 ```
-4. Create a Strip Plot
+  - Create a Strip Plot
 ```sns.stripplot(x="GRADE", y = "SCORE", data = mRests)
 ```
-This plot does not allow us to see the depth of the data and how many datapoints are actually included. To change this, we can use the parameter `jitter = True`.
 
- - Break the data down by the Critical Flag using the `hue` parameter.
-
-5. Try creating a boxplot and barplot using these same parameters (excluding jitter).
+  - This plot does not allow us to see the depth of the data and how many datapoints are actually included. To change this, we can use the parameter `jitter = True`.
+  - Break the data down by the Critical Flag using the `hue` parameter.
+  - Try creating a boxplot and barplot using these same parameters (excluding jitter).
 
 ## 5. Creating maps
 
 ### Convert Addresses to Lat/Long
 
-In order to plot the points on the maps, we will need to convert the addresses to a geolocation. The addresses right now are very inconsistent with their labeling so we have to go through each address and normalize them. We won't go into this code too much but it converts
-
-Copy the following code
+In order to plot the points on the maps, we will need to convert the addresses to a geolocation. The addresses right now are very inconsistent with their labeling so we have to go through each address and normalize them. We won't go into this code too much but it convert numbers to words, and orginal words to numbers. Copy the following code
 ```
 # !pip install -e git+https://github.com/pwdyson/inflect.py#egg=inflect
 # !conda update anaconda --y
@@ -239,9 +237,9 @@ samp['long']= adds['longitude']
 ```
 ### Basemap
 
-1. Install basemap `!conda install basemap --yes`
-2. Import the basemap tool `from mpl_toolkits.basemap import Basemap]`
-3. In order to create a map with basemap, we have to have the upper and lower corner limits for the area we want to zoom in on. This was very difficult to calculate.
+  - Install basemap `!conda install basemap --yes`
+  - Import the basemap tool `from mpl_toolkits.basemap import Basemap]`
+  - In order to create a map with basemap, we have to have the upper and lower corner limits for the area we want to zoom in on. This was very difficult to calculate.
 ```
 map = Basemap(projection='merc',
     resolution = 'h', area_thresh = .01,
@@ -249,7 +247,7 @@ map = Basemap(projection='merc',
     llcrnrlon=-74.03, llcrnrlat=40.701,
     urcrnrlon=-73.86, urcrnrlat=40.901)
 ```
-4. Add boundaries and lines to the map; fill the continents.
+  - Add boundaries and lines to the map; fill the continents.
 ```
 map.drawcoastlines()
 map.drawcountries()
@@ -258,14 +256,14 @@ map.drawrivers()
 map.fillcontinents(color = 'gainsboro')
 map.drawmapboundary(fill_color='steelblue')
 ```
-5. Plot the map map.plot(samp['lat'][1],samp['long'][1],'bo', markersize = 24)
+  - Plot the map map.plot(samp['lat'][1],samp['long'][1],'bo', markersize = 24)
 
 
 ### Folium
 
-1. Install folium `!pip install folium`
-2. Import folium `import folium`
-3. Create the maps. With folium we still need to have the center points for NYC but we no longer need the upper and lower limits as we did with basemap.
+  - Install folium `!pip install folium`
+  - Import folium `import folium`
+  - Create the maps. With folium we still need to have the center points for NYC but we no longer need the upper and lower limits as we did with basemap.
 
 ```mCluster = folium.Map(location=[40.7831, -73.9712], zoom_start =12)
 marker_cluster = folium.MarkerCluster().add_to(mCluster)
@@ -280,9 +278,7 @@ for i in range(len(samp)):
          folium.Marker([samp['lat'][i],samp['long'][i]], popup= "Name: " + str(samp['DBA'][i])+ '\n' + "Score: " + str(samp["SCORE"][i]) + '\n'+'Grade: '+ str(samp["GRADE"][i]),
                       icon=folium.Icon(color='red',icon='no-sign')).add_to(marker_cluster)
 ```
-4. Remove clustering to the map by commenting out the marker_cluster line. and change all of the `add_to(marker_cluster)` to `add_to(m)`.
-
-
+  - Remove clustering to the map by commenting out the marker_cluster line. and change all of the `add_to(marker_cluster)` to `add_to(m)`.
 
 
 ## Create a Microsoft Account
