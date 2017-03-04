@@ -186,6 +186,16 @@ In order to plot the points on the maps, we will need to convert the addresses t
 ```
 !pip install inflect
 
+import inflect
+p = inflect.engine()
+word_to_number_mapping = {}
+
+for i in range(1, 200):
+    word_form = p.number_to_words(i)  # 1 -> 'one'
+    ordinal_word = p.ordinal(word_form)  # 'one' -> 'first'
+    ordinal_number = p.ordinal(i)  # 1 -> '1st'
+    word_to_number_mapping[ordinal_word] = ordinal_number  # 'first': '1st'
+    
 import re
 for i in range(len(mRests)):
 
