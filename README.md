@@ -195,7 +195,7 @@ for i in range(1, 200):
     ordinal_word = p.ordinal(word_form)  # 'one' -> 'first'
     ordinal_number = p.ordinal(i)  # 1 -> '1st'
     word_to_number_mapping[ordinal_word] = ordinal_number  # 'first': '1st'
-    
+
 import re
 for i in range(len(mRests)):
 
@@ -225,7 +225,6 @@ import random
 np.random.seed(seed=10)
 rows = np.random.choice(mRests.index.values, 100)
 samp = mRests.ix[rows]
-samp = random.sample(mRests,100)
 samp= samp.reset_index(drop=True)
 samp
 ```
@@ -241,7 +240,7 @@ samp['long']= adds['longitude']
 ### Basemap
 
   - Install basemap `!conda install basemap --yes`
-  - Import the basemap tool `from mpl_toolkits.basemap import Basemap]`
+  - Import the basemap tool `from mpl_toolkits.basemap import Basemap`
   - In order to create a map with basemap, we have to have the upper and lower corner limits for the area we want to zoom in on. This was very difficult to calculate.
 ```
 map = Basemap(projection='merc',
