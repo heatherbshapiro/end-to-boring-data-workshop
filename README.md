@@ -132,8 +132,152 @@ plt.title("Frequency of Restaurant Scores")
 4. Display the plot
 `plt.show()`
 
-## Create a Microsoft Account
+### Pandas
 
+Create the same graph as above with less code. You can play around with the bin size to change the way the graph looks.
+```
+mRests["SCORE"].hist(bins=20)
+plt.title("Frequency of Restaurant Score")
+```
+
+#### Create a Pie Chart
+mRests["GRADE"].value_counts().plot(kind = "pie")
+
+#### Create a Bar Chart to understand the Critical Flag
+
+mRests["Critical Flag"].value_counts().plot(kind = "bar")
+
+### Seaborn
+1. Install seaborn ` ## pip install seaborn`
+2. Import Seaborn `import seaborn as sns`
+3. Select the plot style
+
+To see what styles are available  `plt.style.available`
+You can select the style by running either of the following lines:
+```
+sns.set(style="whitegrid", color_codes=True) ### Updates only the seaborn charts created after the fact
+plt.style.use('seaborn-colorblind') ### updates for all graphs in the page created after the fact
+```
+4. Create a Strip Plot
+```sns.stripplot(x="GRADE", y = "SCORE", data = mRests)
+```
+This plot does not allow us to see the depth of the data and how many datapoints are actually included. To change this, we can use the parameter `jitter = True`.
+
+ - Break the data down by the Critical Flag using the `hue` parameter.
+
+5. Try creating a boxplot and barplot using these same parameters (excluding jitter).
+
+## 5. Creating maps
+
+### Convert Addresses to Lat/Long
+
+In order to plot the points on the maps, we will need to convert the addresses to a geolocation. The addresses right now are very inconsistent with their labeling so we have to go through each address and normalize them. We won't go into this code too much but it converts
+
+Copy the following code
+```
+# !pip install -e git+https://github.com/pwdyson/inflect.py#egg=inflect
+# !conda update anaconda --y
+!pip install inflect
+
+import inflect
+p = inflect.engine()
+word_to_number_mapping = {}
+
+for i in range(1, 200):
+    word_form = p.number_to_words(i)  # 1 -> 'one'
+    ordinal_word = p.ordinal(word_form)  # 'one' -> 'first'
+    ordinal_number = p.ordinal(i)  # 1 -> '1st'
+    word_to_number_mapping[ordinal_word] = ordinal_number  # 'first': '1st'
+
+import re
+for i in range(len(mRests)):
+
+    street= mRests['STREET'][i].split()    
+    for j in range(len(street)):
+        if street[j].lower() in word_to_number_mapping:
+            
+            street[j]=  word_to_number_mapping[street[j].lower()]
+    for j in range(len(street)):
+        if re.findall(r'([0-9]+(st|rd|th|nd)+)', street[j].lower())==[]:
+            if(filter(str.isdigit, street[j])!=''):
+                val=int(filter(str.isdigit, street[j]))
+                street[j]=street[j].replace(str(val), str(p.ordinal(val)))    
+        streetFull = ' '.join(street)
+        mRests.set_value(i,'STREET',streetFull)
+
+mRests["Address"]=mRests['BUILDING'].map(str)+ " " + mRests['STREET'].map(str)+ ", " + mRests['ZIPCODE'].map(str)
+```
+
+### Sample Data with the same seed
+There are over 80,000 data points in mRests so we will take a sample of 100 of these points in order to plot them on a map more easily. We will set the seed to be the same every time so that we always get the same data and can compare our results.
+
+```
+# import random
+np.random.seed(seed=10)
+rows = np.random.choice(mRests.index.values, 100)
+samp = mRests.ix[rows]
+# samp = random.sample(mRests,90)
+samp= samp.reset_index(drop=True)
+samp
+```
+### Geocode Addresses
+Now let's geocode the addresses. Due to API restrictions, I used an external [site](http://www.findlatitudeandlongitude.com/batch-geocode/#.WArN5-grIvg) to match the addresses to lat/long points. I have already coded these addresses so we can skip this step and just use the same addresses :).
+
+```
+!curl -L 'https://www.dropbox.com/s/p4145z5odvlypez/address.csv?dl=1' -o address.csv
+adds = pd.read_csv("address.csv")
+samp['lat']= adds['latitude']
+samp['long']= adds['longitude']
+```
+### Basemap
+
+1. Install basemap `!conda install basemap --yes`
+2. Import the basemap tool `from mpl_toolkits.basemap import Basemap]`
+3. In order to create a map with basemap, we have to have the upper and lower corner limits for the area we want to zoom in on. This was very difficult to calculate.
+```
+map = Basemap(projection='merc',
+    resolution = 'h', area_thresh = .01,
+    lat_0=40.7831, lon_0= -73.9712,
+    llcrnrlon=-74.03, llcrnrlat=40.701,
+    urcrnrlon=-73.86, urcrnrlat=40.901)
+```
+4. Add boundaries and lines to the map; fill the continents.
+```
+map.drawcoastlines()
+map.drawcountries()
+map.drawstates()
+map.drawrivers()
+map.fillcontinents(color = 'gainsboro')
+map.drawmapboundary(fill_color='steelblue')
+```
+5. Plot the map map.plot(samp['lat'][1],samp['long'][1],'bo', markersize = 24)
+
+
+### Folium
+
+1. Install folium `!pip install folium`
+2. Import folium `import folium`
+3. Create the maps. With folium we still need to have the center points for NYC but we no longer need the upper and lower limits as we did with basemap.
+
+```mCluster = folium.Map(location=[40.7831, -73.9712], zoom_start =12)
+marker_cluster = folium.MarkerCluster().add_to(mCluster)
+for i in range(len(samp)):
+    if samp["GRADE"][i] =="A":
+        folium.Marker([samp['lat'][i],samp['long'][i]], popup= "Name: " + str(samp['DBA'][i])+ '\n' + "Score: " + str(samp["SCORE"][i]) + '\n'+'Grade: '+ str(samp["GRADE"][i]),
+                      icon=folium.Icon(color="green", icon='no-sign')).add_to(marker_cluster)
+    elif samp["GRADE"][i]=="B":
+         folium.Marker([samp['lat'][i],samp['long'][i]], popup= "Name: " + str(samp['DBA'][i])+ '\n' + "Score: " + str(samp["SCORE"][i]) + '\n'+'Grade: '+ str(samp["GRADE"][i]),
+                      icon=folium.Icon(color='blue',icon='no-sign')).add_to(marker_cluster)
+    else:
+         folium.Marker([samp['lat'][i],samp['long'][i]], popup= "Name: " + str(samp['DBA'][i])+ '\n' + "Score: " + str(samp["SCORE"][i]) + '\n'+'Grade: '+ str(samp["GRADE"][i]),
+                      icon=folium.Icon(color='red',icon='no-sign')).add_to(marker_cluster)
+```
+4. Remove clustering to the map by commenting out the marker_cluster line. and change all of the `add_to(marker_cluster)` to `add_to(m)`.
+
+
+
+
+## Create a Microsoft Account
 If you do not already have a Microsoft account, when you go to login click "Create a New Microsoft Account".
 1.  Enter an email and password that you would like to use for your new account. You may use an email that you already have and link the two. Otherwise click "Get a new email address" and follow the steps.
 2. Click 'Next' 
