@@ -150,11 +150,14 @@ plt.title("Frequency of Restaurant Score")
 ```
 
 #### Create a Pie Chart
+```
 mRests["GRADE"].value_counts().plot(kind = "pie")
-
+```
 #### Create a Bar Chart to understand the Critical Flag
 
+```
 mRests["Critical Flag"].value_counts().plot(kind = "bar")
+```
 
 ### Seaborn
   - Install seaborn ` ## pip install seaborn`
@@ -265,7 +268,8 @@ map.drawmapboundary(fill_color='steelblue')
   - Import folium `import folium`
   - Create the maps. With folium we still need to have the center points for NYC but we no longer need the upper and lower limits as we did with basemap.
 
-```mCluster = folium.Map(location=[40.7831, -73.9712], zoom_start =12)
+```
+mCluster = folium.Map(location=[40.7831, -73.9712], zoom_start =12)
 marker_cluster = folium.MarkerCluster().add_to(mCluster)
 for i in range(len(samp)):
     if samp["GRADE"][i] =="A":
