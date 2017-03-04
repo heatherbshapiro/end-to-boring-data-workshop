@@ -33,13 +33,13 @@ This workshop will walk through the steps of analyzing a NYC Restaurant Rating d
 
 ## Steps to take
 1. [Setting up Azure Notebooks](#1-setting-up-azure-notebooks)
-2. Importing dataset and loading necessary libraries
-3. Understanding Pandas for data analysis
-4. Basic Graphs
+2. [Importing dataset and loading necessary libraries](#2-importing-the-dataset-and-necessary-libraries)
+3. [Understanding Pandas for data analysis](#3-understanding-pandas-for-data-analysis)
+4. [Traditional Statistical Graphs](#4-creating-traditional-statistical-graphs)
     - Matplotlib
     - Pandas
     - Seaborn
-5. Mapping
+5. [Mapping](#5-creating-maps)
     - Basemap
     - Folium
 6. Interactive Graphs
@@ -284,6 +284,7 @@ for i in range(len(samp)):
 ```
   - Remove clustering to the map by commenting out the marker_cluster line. and change all of the `add_to(marker_cluster)` to `add_to(m)`.
   - You can save the html for this file `m.save('restaurants.html')` and import it into your websites.
+
 ## 6. Creating Interactive Graphs
 
 ### Bokeh
