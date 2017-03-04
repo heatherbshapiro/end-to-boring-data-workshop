@@ -283,7 +283,127 @@ for i in range(len(samp)):
                       icon=folium.Icon(color='red',icon='no-sign')).add_to(marker_cluster)
 ```
   - Remove clustering to the map by commenting out the marker_cluster line. and change all of the `add_to(marker_cluster)` to `add_to(m)`.
+  - You can save the html for this file `m.save('restaurants.html')` and import it into your websites.
+## 6. Creating Interactive Graphs
 
+### Bokeh
+  - Import Bokeh server and open a BokehJS notebook 
+```
+from bokeh.io import output_notebook
+output_notebook()
+```
+  - Import Bokeh charts
+``` 
+from bokeh.charts import Histogram, output_file, show
+```
+  - Create a histogram `p1=Histogram(samp['SCORE'])`.
+  - Display the chart `show(p1)`
+  - You can update parameters for the title, number of bins, and where the legend is.
+```
+p2 = Histogram(mRests,'SCORE', color='GRADE',
+              title="Score Grouped by Grade", bins = 15,
+              legend='top_right')
+```
+  - Create a tabbed image with multiple graphs. 
+```
+
+from bokeh.models.widgets import Panel, Tabs
+from bokeh.io import output_file, show
+from bokeh.plotting import figure
+
+tab1 = Panel(child=p1, title="Frequency of Score")
+tab2 = Panel(child=p2, title="By Grade")
+
+tabs = Tabs(tabs=[ tab1, tab2 ])
+```
+  - Save the html file `output_file("tabs.html")`
+
+### Plotly
+
+We will use the offline version of plotly so we will not need to create any accounts here or upload our graphs. 
+  - Import plotly
+  ```
+import plotly.graph_objs as go
+from plotly.offline import download_plotlyjs, init_notebook_mode, iplot
+init_notebook_mode(connected=True)
+```
+  - Create a histogram
+```
+x = mRests['GRADE']
+
+tr1 = go.Histogram(x=x, histnorm='probability density', 
+                xbins=dict(start=np.min(x), size= 0.25, end= np.max(x)),
+                marker=dict(color='rgb(0,0,100)'))
+title =" Probability Density of Grades"
+
+layout = dict(
+            title=title,
+            autosize= True,
+            bargap= 0.015,
+            height= 600,
+            width= 700,       
+            hovermode= 'x',
+            xaxis=dict(
+            autorange= True,
+            zeroline= False),
+            yaxis= dict(
+            autorange= True,
+            showticklabels= True,
+           ))
+fig1 = go.Figure(data=go.Data([tr1]), layout=layout)
+```
+  - Display the chart `iplot(fig1)`
+
+While plotly is good for interactive graphs it's not good with local data.
+```
+samp['text'] = "Name: " + samp['DBA'].astype(str)+ '\n' + "Score: " + samp["SCORE"].astype(str) + '\n'+'Grade: '+ samp["GRADE"].astype(str)
+
+scl = [ [0,"rgb(5, 10, 172)"],[0.35,"rgb(40, 60, 190)"],[0.5,"rgb(70, 100, 245)"],\
+    [0.6,"rgb(90, 120, 245)"],[0.7,"rgb(106, 137, 247)"],[1,"rgb(220, 220, 220)"] ]
+
+data = [ dict(
+        type = 'scattergeo',
+        locationmode = 'USA-states',
+        lon = samp['long'],
+        lat = samp['lat'],
+        text = samp['text'],
+        mode = 'markers',
+        marker = dict( 
+            size = 8, 
+            opacity = 0.8,
+            reversescale = True,
+            autocolorscale = False,
+            symbol = 'square',
+            line = dict(
+                width=1,
+                color='rgba(102, 102, 102)'
+            ),
+            colorscale = scl,
+            cmin = 0,
+            color = samp['SCORE'],
+            cmax = samp['SCORE'].max(),
+            colorbar=dict(
+                title="Restaurant Score"
+            )
+        ))]
+
+layout = dict(
+        title = 'Restaurant Scores',
+#         colorbar = True,   
+        geo = dict(
+            scope='usa',
+#             projection=dict( type='albers usa' ),
+            showland = True,
+            landcolor = "rgb(250, 250, 250)",
+            subunitcolor = "rgb(217, 217, 217)",
+            countrycolor = "rgb(217, 217, 217)",
+            countrywidth = 0.5,
+            subunitwidth = 0.5        
+        ),
+    )
+
+fig = dict( data=data, layout=layout )
+```
 
 ## Create a Microsoft Account
 If you do not already have a Microsoft account, when you go to login click "Create a New Microsoft Account".
