@@ -42,7 +42,7 @@ This workshop will walk through the steps of analyzing a NYC Restaurant Rating d
 5. [Mapping](#5-creating-maps)
     - Basemap
     - Folium
-6. Interactive Graphs
+6. [Interactive Graphs](#6-creating-interactive-graphs)
     - Bokeh
     - Plot.ly
 
