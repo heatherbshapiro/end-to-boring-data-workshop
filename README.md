@@ -184,36 +184,26 @@ sns.stripplot(x="GRADE", y = "SCORE", data = mRests)
 
 In order to plot the points on the maps, we will need to convert the addresses to a geolocation. The addresses right now are very inconsistent with their labeling so we have to go through each address and normalize them. We won't go into this code too much but it convert numbers to words, and orginal words to numbers. Copy the following code
 ```
-!pip install -e git+https://github.com/pwdyson/inflect.py#egg=inflect
-!conda update anaconda --y
 !pip install inflect
-
-import inflect
-p = inflect.engine()
-word_to_number_mapping = {}
-
-for i in range(1, 200):
-    word_form = p.number_to_words(i)  # 1 -> 'one'
-    ordinal_word = p.ordinal(word_form)  # 'one' -> 'first'
-    ordinal_number = p.ordinal(i)  # 1 -> '1st'
-    word_to_number_mapping[ordinal_word] = ordinal_number  # 'first': '1st'
 
 import re
 for i in range(len(mRests)):
 
     street= mRests['STREET'][i].split()    
+    
     for j in range(len(street)):
         if street[j].lower() in word_to_number_mapping:
             
             street[j]=  word_to_number_mapping[street[j].lower()]
+            print(street[j])
     for j in range(len(street)):
         if re.findall(r'([0-9]+(st|rd|th|nd)+)', street[j].lower())==[]:
-            if(filter(str.isdigit, street[j])!=''):
-                val=int(filter(str.isdigit, street[j]))
+            if street[j].isdigit():
+                val=(street[j])
                 street[j]=street[j].replace(str(val), str(p.ordinal(val)))    
         streetFull = ' '.join(street)
         mRests.set_value(i,'STREET',streetFull)
-
+  
 mRests["Address"]=mRests['BUILDING'].map(str)+ " " + mRests['STREET'].map(str)+ ", " + mRests['ZIPCODE'].map(str)
 ```
 
@@ -221,11 +211,11 @@ mRests["Address"]=mRests['BUILDING'].map(str)+ " " + mRests['STREET'].map(str)+ 
 There are over 80,000 data points in mRests so we will take a sample of 100 of these points in order to plot them on a map more easily. We will set the seed to be the same every time so that we always get the same data and can compare our results.
 
 ```
-# import random
+import random
 np.random.seed(seed=10)
 rows = np.random.choice(mRests.index.values, 100)
 samp = mRests.ix[rows]
-# samp = random.sample(mRests,90)
+samp = random.sample(mRests,100)
 samp= samp.reset_index(drop=True)
 samp
 ```
