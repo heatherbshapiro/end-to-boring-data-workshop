@@ -231,6 +231,19 @@ samp
 ### Geocode Addresses
 Now let's geocode the addresses. Due to API restrictions, I used an external [site](http://www.findlatitudeandlongitude.com/batch-geocode/#.WArN5-grIvg) to match the addresses to lat/long points. I have already coded these addresses so we can skip this step and just use the same addresses :).
 
+In order to write a text file out with your own address data you can use the following code:
+```
+with open ('out.txt','w') as f: ##save addresses to txt file to batch geocode
+ for i in range(len(samp)):
+    f.write(samp['Address'][i]+ '\n')
+```
+There is no easy way to download this file right now, but the best way for smaller files is to use [transfer.sf](https://transfer.sh). You can upload the file there with a curl request, go to the link it provides, and then download the file.
+
+```
+!curl --upload-file out.txt https://transfer.sh/out.txt
+```
+After you get the lat/long CSV and upload it to transfer.sh or dropbox you can download it into the python notebook.
+
 ```
 !curl -L 'https://www.dropbox.com/s/p4145z5odvlypez/address.csv?dl=1' -o address.csv
 adds = pd.read_csv("address.csv")
